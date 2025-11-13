@@ -11,13 +11,13 @@ struct ContentView: View {
     var body: some View {
         TabView {
             Tab (Constants.breakingBadName, systemImage: "tortoise"){
-                QuoteView(show: Constants.breakingBadName)
+                FetchView(show: Constants.breakingBadName)
             }
             Tab (Constants.betterCallSaulName, systemImage: "briefcase"){
-                QuoteView(show: Constants.betterCallSaulName)
+                FetchView(show: Constants.betterCallSaulName)
             }
             Tab (Constants.elCaminoName, systemImage: "car"){
-                QuoteView(show: Constants.elCaminoName)
+                FetchView(show: Constants.elCaminoName)
             }
         }
         .preferredColorScheme(.dark)
