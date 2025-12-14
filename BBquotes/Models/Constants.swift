@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Constants {
+enum Constants: Equatable {
     static let breakingBadName = "Breaking Bad"
     static let betterCallSaulName = "Better Call Saul"
     static let elCaminoName = "El Camino"

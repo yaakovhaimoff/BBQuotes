@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    let vm = ViewModel()
     var body: some View {
         TabView {
             Tab (Constants.breakingBadName, systemImage: "tortoise"){

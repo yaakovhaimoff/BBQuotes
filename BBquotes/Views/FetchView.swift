@@ -40,7 +40,7 @@ struct FetchView: View {
                                 .padding(.horizontal)
                             
                             ZStack(alignment: .bottom) {
-                                AsyncImage(url: vm.character.images[0]) {
+                                AsyncImage(url: vm.character.images.randomElement()!) {
                                     image in
                                     image
                                         .resizable()
@@ -71,7 +71,7 @@ struct FetchView: View {
                     }
                     
                     Spacer(minLength: 20)
-                   
+                    
                     HStack {
                         Button {
                             Task {
@@ -114,6 +114,11 @@ struct FetchView: View {
         .ignoresSafeArea()
         .sheet(isPresented: $showCharacterInfo) {
             CharacterView(character: vm.character, show: show)
+        }
+        .onAppear {
+            Task {
+                await vm.getQuoteData(for: show)
+            }
         }
     }
 }
