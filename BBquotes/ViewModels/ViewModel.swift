@@ -14,6 +14,7 @@ class ViewModel {
         case notStarted
         case fetching
         case successQuote
+        case successCharacter
         case successEpisode
         case failure(error: Error)
     }
@@ -52,6 +53,17 @@ class ViewModel {
         } catch {
             print("error: \(error)")
             status = .failure(error: error)
+        }
+    }
+    
+    func getCharacter(for show: String) async {
+        status = .fetching
+        
+        do {
+            character = try await fetcher.fetchRandomCharacter(from: show)
+            status = .successCharacter
+        } catch {
+            print("error: \(error)")
         }
     }
     

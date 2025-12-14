@@ -62,6 +62,9 @@ struct FetchView: View {
                                 showCharacterInfo.toggle()
                             }
                             
+                        case .successCharacter:
+                            CharacterView(character: vm.character, show: show)
+                            
                         case .successEpisode:
                             EpisodeView(episode: vm.episode)
                             
@@ -102,8 +105,24 @@ struct FetchView: View {
                                 .clipShape(.rect(cornerRadius: 7))
                                 .shadow(color: Color(Color("\(show.removeSpaces())Shaddow")), radius: 2)
                         }
+   
+                        Spacer()
+                        
+                        Button {
+                            Task {
+                                await vm.getCharacter(for: show)
+                            }
+                        } label : {
+                            Text("Get Random Character")
+                                .font(.title3)
+                                .foregroundStyle(.white)
+                                .padding()
+                                .background(Color(("\(show.removeSpaces())Button")))
+                                .clipShape(.rect(cornerRadius: 7))
+                                .shadow(color: Color(Color("\(show.removeSpaces())Shaddow")), radius: 2)
+                        }
                     }
-                    .padding(.horizontal, 30)
+                    .padding(.horizontal, 20)
                     
                     Spacer(minLength: 95)
                 }
@@ -113,7 +132,7 @@ struct FetchView: View {
         }
         .ignoresSafeArea()
         .sheet(isPresented: $showCharacterInfo) {
-            CharacterView(character: vm.character, show: show)
+            CharacterInfo(character: vm.character, show: show)
         }
         .onAppear {
             Task {
