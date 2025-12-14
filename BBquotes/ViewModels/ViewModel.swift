@@ -26,6 +26,7 @@ class ViewModel {
     var quote: Quote
     var character: Char
     var episode: Episode
+    var randomQuote: Quote?
     
     init() {
         let decoder = JSONDecoder()
@@ -62,6 +63,14 @@ class ViewModel {
         do {
             character = try await fetcher.fetchRandomCharacter(from: show)
             status = .successCharacter
+        } catch {
+            print("error: \(error)")
+        }
+    }
+    
+    func getRandomQoute(for name: String) async {
+        do {
+            randomQuote = try await fetcher.fetchRandomCharacterQoute(from: name)
         } catch {
             print("error: \(error)")
         }

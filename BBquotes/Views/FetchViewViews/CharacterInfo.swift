@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct CharacterInfo: View {
+    let vm = ViewModel()
     let character: Char
     let show: String
+    
+    var quote: String {
+        if let randomQuote = vm.randomQuote?.quote, !randomQuote.isEmpty {
+            return randomQuote
+        } else {
+            return vm.quote.quote
+        }
+    }
     
     var body: some View {
         GeometryReader { geo in
@@ -22,13 +31,34 @@ struct CharacterInfo: View {
                     ScrollView {
                         TabView {
                             ForEach(character.images, id: \.self) { characterImageURL in
-                                AsyncImage(url: characterImageURL) {
-                                    image in
-                                    image
-                                        .resizable()
-                                        .scaledToFill()
-                                } placeholder: {
-                                    ProgressView()
+                                
+                                ZStack(alignment: .bottom) {
+                                    AsyncImage(url: characterImageURL) {
+                                        image in
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    
+                                    VStack {
+                                        Text("\(quote)")
+                                            .font(.subheadline)
+                                            .foregroundStyle(.white)
+                                        
+                                        Button("Get another quote") {
+                                            Task {
+                                                await vm.getRandomQoute(for: character.name)
+                                            }
+                                        }
+                                        .font(.title3)
+                                        .foregroundStyle(.white)
+                                        .background(Color(("\(show.removeSpaces())Button")))
+                                        .clipShape(.rect(cornerRadius: 6))
+                                        .shadow(color: Color(Color("\(show.removeSpaces())Shaddow")), radius: 2)
+                                        .padding(.bottom, 40)
+                                    }
                                 }
                             }
                         }
@@ -121,3 +151,4 @@ struct CharacterInfo: View {
 #Preview {
     CharacterInfo(character: ViewModel().character, show: "Breaking Bad")
 }
+

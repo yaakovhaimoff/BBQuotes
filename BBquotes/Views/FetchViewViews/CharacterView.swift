@@ -42,6 +42,7 @@ struct CharacterView: View {
             .background(.black.opacity(0.6))
             .clipShape(.rect(cornerRadius: 25))
             .padding(.horizontal)
+            .padding(.top, 40)
         }
     }
 }

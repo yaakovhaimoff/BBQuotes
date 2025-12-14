@@ -34,7 +34,7 @@ struct FetchService {
         return quote
     }
     
-    func fetchRandomCharacter(from show:String) async throws -> Char {
+    func fetchRandomCharacter(from show: String) async throws -> Char {
         let quoteURL = baseURL.appending(path: "characters/random")
         let (data, response) = try await URLSession.shared.data(from: quoteURL)
         
@@ -53,6 +53,24 @@ struct FetchService {
         } else {
             return try await fetchRandomCharacter(from: show)
         }
+    }
+    
+    func fetchRandomCharacterQoute(from name: String) async throws -> Quote {
+        let quoteURL = baseURL.appending(path: "quotes/random")
+        let fetchURL = quoteURL.appending(queryItems: [URLQueryItem(name: "character", value: name)])
+        let (data, response) = try await URLSession.shared.data(from: fetchURL)
+        
+        //handle response
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw FetchError.badResponse
+        }
+        
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        
+        let quote = try decoder.decode(Quote.self, from: data)
+        
+        return quote
     }
     
     func fetchCharacter(_ name: String) async throws -> Char {
